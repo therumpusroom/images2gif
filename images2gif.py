@@ -423,7 +423,7 @@ class GifWriter:
         # Obtain palette for all images and count each occurance
         palettes, occur = [], []
         for im in images:
-            palettes.append( getheader(im)[1] )
+            palettes.append(im.palette.getdata()[1])
         for palette in palettes:
             occur.append( palettes.count( palette ) )
 
@@ -495,7 +495,7 @@ class GifWriter:
 
 ## Exposed functions
 
-def writeGif(filename, images, duration=0.1, repeat=True, dither=False,
+def writeGif(fp, images, duration=0.1, repeat=True, dither=False,
                 nq=0, subRectangles=True, dispose=None):
     """ writeGif(filename, images, duration=0.1, repeat=True, dither=False,
                     nq=0, subRectangles=True, dispose=None)
@@ -588,11 +588,7 @@ def writeGif(filename, images, duration=0.1, repeat=True, dither=False,
     images = gifWriter.convertImagesToPIL(images, dither, nq)
 
     # Write
-    fp = open(filename, 'wb')
-    try:
-        gifWriter.writeGifToFile(fp, images, duration, loops, xy, dispose)
-    finally:
-        fp.close()
+    gifWriter.writeGifToFile(fp, images, duration, loops, xy, dispose)
 
 
 
