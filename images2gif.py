@@ -230,9 +230,9 @@ class GifWriter:
         -------
           * 0 - No disposal specified.
           * 1 - Do not dispose. The graphic is to be left in place.
-          * 2 -	Restore to background color. The area used by the graphic
+          * 2 - Restore to background color. The area used by the graphic
             must be restored to the background color.
-          * 3 -	Restore to previous. The decoder is required to restore the
+          * 3 - Restore to previous. The decoder is required to restore the
             area overwritten by the graphic with what was there prior to
             rendering the graphic.
           * 4-7 -To be defined.
@@ -423,7 +423,12 @@ class GifWriter:
         # Obtain palette for all images and count each occurance
         palettes, occur = [], []
         for im in images:
-            palettes.append(im.palette.getdata()[1])
+            # Appengine production
+            p = getheader(im)[1]
+            if not p:
+                # Appengine development
+                p =  im.palette.getdata()[1]
+            palettes.append(p)
         for palette in palettes:
             occur.append( palettes.count( palette ) )
 
